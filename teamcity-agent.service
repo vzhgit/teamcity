@@ -1,0 +1,20 @@
+[Unit]
+Description=TeamCity Build Agent
+After=network.target
+
+[Service]
+Environment="JAVA_HOME=/usr/bin/java"
+ExecStart=/data/buildAgent/bin/agent.sh start
+Type=forking
+RemainAfterExit=yes
+User=ubuntu
+SyslogIdentifier=teamcity_agent
+PrivateTmp=yes
+PIDFile=/data/buildAgent/logs/buildAgent.pid
+ExecStop=/data/buildAgent/bin/agent.sh stop
+RestartSec=5
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
