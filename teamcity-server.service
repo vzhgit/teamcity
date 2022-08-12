@@ -1,0 +1,21 @@
+[Unit]
+Description=TeamCity Server
+; next two lines are needed if TeamCity's database in a docker container with PostgreSQL Server
+BindsTo=docker.service
+After=network.target docker.service
+
+[Service]
+PIDFile=/home/ubuntu/TeamCity/logs/teamcity.pid
+ExecStart=/home/ubuntu/TeamCity/bin/teamcity-server.sh start
+Type=forking
+RemainAfterExit=yes
+User=ubuntu
+SyslogIdentifier=teamcity
+PrivateTmp=yes
+Environment=TEAMCITY_SERVER_OPTS=-Djava.awt.headless=true
+ExecStop=/home/ubuntu/TeamCity/bin/teamcity-server.sh stop
+RestartSec=5
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
